@@ -2,9 +2,9 @@ require 'spec_helper'
 
 RSpec.describe "Trades API", type: :request do
 
-  let!(:portfolios) { create_list(:portfolio, 5)}
-  let!(:trades) { create_list(:trade, 10)}
-  let(:trade_id) { Trade.all.sample.id }
+  let!(:portfolios) { create_list(:portfolio, 3)}
+  let!(:trades) { create_list(:trade, 2)}
+  let(:trade_id) { Trade.all.first.id }
 
   describe "GET #show" do
 
@@ -12,17 +12,27 @@ RSpec.describe "Trades API", type: :request do
 
     context "when trade exists" do
 
-      it "returns the trade"
+      it "returns the trade" do
+        expect(JSON.parse(response.body)).not_to be_empty
+        expect(JSON.parse(response.body)['id']).to eq(trade_id)
+      end
 
       it "returns status code 200" do
+        expect(response).to have_http_status(200)
+      end
 
     end
 
     context 'when trade does not exist' do
+      let(:trade_id) { 100 }
 
-      it "returns not found message"
+      it "returns not found message" do
+        expect(response.body).to match(/Couldn't find Trade/)
+      end
 
-      it "returns status code 404"
+      it "returns status code 404" do
+        expect(response).to have_http_status(404)
+      end
     end
 
   end
