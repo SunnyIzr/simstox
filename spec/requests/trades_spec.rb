@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe TradesController, type: :controller do
+RSpec.describe "Trades API", type: :request do
 
   let!(:portfolios) { create_list(:portfolio, 5)}
   let!(:trades) { create_list(:trade, 10)}
@@ -14,7 +14,7 @@ RSpec.describe TradesController, type: :controller do
 
       it "returns the trade"
 
-      it "returns status code 200"
+      it "returns status code 200" do
 
     end
 
