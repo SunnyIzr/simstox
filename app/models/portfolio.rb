@@ -1,4 +1,5 @@
 class Portfolio < ApplicationRecord
   has_many :trades
-  validates :name, :cash_cents, presence: true
+  belongs_to :user
+  validates :name, :cash_cents, :user_id, presence: true
 end
