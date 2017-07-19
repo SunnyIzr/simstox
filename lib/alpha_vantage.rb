@@ -1,3 +1,4 @@
+require 'net/http'
 module AlphaVantage
   extend self
   BASE_URI = "https://www.alphavantage.co/query?"
