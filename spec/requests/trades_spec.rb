@@ -2,6 +2,7 @@ require 'spec_helper'
 
 RSpec.describe "Trades API", type: :request do
 
+  let!(:user) {FactoryGirl.create(:user)}
   let!(:portfolios) { create_list(:portfolio, 3)}
   let!(:trades) { create_list(:trade, 2)}
   let(:trade_id) { Trade.all.first.id }

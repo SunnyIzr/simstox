@@ -2,6 +2,7 @@ require 'spec_helper'
 
 RSpec.describe "Portfolios API", type: :request do
 
+  let!(:user) {FactoryGirl.create(:user)}
   let!(:portfolios) { create_list(:portfolio, 3)}
   let(:portfolio_id) {Portfolio.last.id}
 
@@ -41,7 +42,8 @@ RSpec.describe "Portfolios API", type: :request do
 
     let(:valid_attributes) { {
       name: "High Yield Fixed Income",
-      cash_cents: 100_000
+      cash_cents: 100_000,
+      user_id: User.last.id
       }}
 
     context "when request is valid" do
@@ -58,7 +60,7 @@ RSpec.describe "Portfolios API", type: :request do
     end
 
     context "when request is not valid" do
-      before { post '/portfolios', params: { cash_cents: 100_000 } }
+      before { post '/portfolios', params: { cash_cents: 100_000, user_id: User.last.id } }
 
       it "returns a failure message" do
         expect(response.body).to match(/Validation failed: Name can't be blank/)
