@@ -24,7 +24,7 @@ RSpec.describe "Portfolios API", type: :request do
     end
 
     context 'when portfolio does not exist' do
-      let(:portfolio_id) { 100 }
+      let(:portfolio_id) { Portfolio.last.id + 100 }
 
       it "returns not found message" do
         expect(response.body).to match(/Couldn't find Portfolio/)
@@ -91,7 +91,7 @@ RSpec.describe "Portfolios API", type: :request do
     end
 
     context "when portfolio does not exist" do
-      let(:portfolio_id) { 100 }
+      let(:portfolio_id) { Portfolio.last.id + 100 }
       before { put "/portfolios/#{portfolio_id}", params: valid_attributes }
 
       it "returns not found message" do
@@ -121,7 +121,7 @@ RSpec.describe "Portfolios API", type: :request do
     end
 
     context "when portfolio does not exist" do
-      let(:portfolio_id) { 100 }
+      let(:portfolio_id) { Portfolio.last.id + 100 }
       before { delete "/portfolios/#{portfolio_id}" }
 
       it "returns not found message" do

@@ -25,7 +25,7 @@ RSpec.describe "Trades API", type: :request do
     end
 
     context 'when trade does not exist' do
-      let(:trade_id) { 100 }
+      let(:trade_id) { Trade.last.id + 100 }
 
       it "returns not found message" do
         expect(response.body).to match(/Couldn't find Trade/)
