@@ -4,6 +4,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'simplecov'
 require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
+
 SimpleCov.start
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
