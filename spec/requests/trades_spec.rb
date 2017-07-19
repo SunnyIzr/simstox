@@ -6,7 +6,7 @@ RSpec.describe "Trades API", type: :request do
   let!(:trades) { create_list(:trade, 2)}
   let(:trade_id) { Trade.all.first.id }
 
-  describe "GET #show" do
+  describe "GET /trades/:id" do
 
     before { get "/trades/#{trade_id}" }
 
@@ -37,7 +37,7 @@ RSpec.describe "Trades API", type: :request do
 
   end
 
-  describe "POST #create" do
+  describe "POST /trades" do
 
     let(:valid_attributes) { {
       quantity: 10,
