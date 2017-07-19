@@ -10,6 +10,6 @@ module AlphaVantage
 
   def latest(ticker, realtime=true)
     function = realtime ? 'intraday' : 'daily'
-    timeseries(function,ticker).to_a[1][1].to_a[0][1]['4. close']
+    timeseries(function,ticker).to_a[1][1].to_a[0][1]['4. close'].to_f
   end
 end
