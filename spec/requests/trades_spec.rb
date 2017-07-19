@@ -40,25 +40,35 @@ RSpec.describe "Trades API", type: :request do
   describe "POST #create" do
 
     let(:valid_attributes) { {
-      quantity: [*10..5_000].sample,
-      ticker: %w[T CSCO KO CMCSA INTC NKE ORCL PFE TD VZ WFC].sample, 
-      price_cents: [*30_00..60_00].sample,
-      portfolio_id: Portfolio.all.sample.id
+      quantity: 10,
+      ticker: "NKE", 
+      price_cents: 40_00,
+      portfolio_id: Portfolio.last.id
       }}
 
     context "when request is valid" do
+      before { post '/trades', params: valid_attributes }
 
-      it "creates a trade"
+      it "creates a trade" do
+         expect(JSON.parse(response.body)['ticker']).to eq('NKE')
+      end
 
-      it "returns status code 201"
+      it "returns status code 201" do
+        expect(response).to have_http_status(201)
+      end
 
     end
 
     context "when request is not valid" do
+      before { post '/trades', params: { quantity: 10, ticker: "NKE", price_cents: 40_00 } }
 
-      it "returns a failure message"
+      it "returns a failure message" do
+        expect(response.body).to match(/Validation failed: Portfolio must exist/)
+      end
 
-      it "returns status code 422"
+      it "returns status code 422" do
+        expect(response).to have_http_status(422)
+      end
       
     end
   end
