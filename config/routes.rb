@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  resources :trades
+  resources :trades, only: [:show, :create]
 end
