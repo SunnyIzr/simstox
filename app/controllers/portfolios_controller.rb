@@ -24,7 +24,7 @@ class PortfoliosController < ApplicationController
   private
 
   def portfolio_params
-    params.permit(:name, :cash_cents)
+    params.permit(:name, :cash_cents, :user_id)
   end
 
   def set_portfolio
