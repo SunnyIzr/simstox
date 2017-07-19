@@ -5,6 +5,6 @@ FactoryGirl.define do
     quantity { [*10..5_000].sample }
     ticker { stocks.sample }
     price_cents { [*30_00..60_00].sample }
-    potfolio_id { Portfolio.all.sample.id }
+    portfolio_id { Portfolio.all.sample.id }
   end
 end
