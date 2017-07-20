@@ -23,4 +23,8 @@ end
       })
     end
   end
+
+  Stock.all.each do |stock|
+    stock.save_historical_quotes
+  end
 end
