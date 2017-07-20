@@ -24,7 +24,19 @@ end
     end
   end
 
-  Stock.all.each do |stock|
-    stock.save_historical_quotes
+end
+
+Stock.all.each do |stock|
+  stock.save_historical_quotes
+end
+
+returns = [0.97, 1.03, 1.05, 1.1, 0.9, 0.75, 0.87, 0.99, 0.94]
+Portfolio.all.each do |portfolio|
+  market_value = ( portfolio.market_value * 100 ).to_i
+  time = Time.new
+  100.times do
+    PortfolioValue.create(cash_cents: portfolio.cash_cents, market_value_cents: market_value, portfolio_id: portfolio.id, time: time)
+    market_value = (market_value * returns.sample).to_i
+    time = time - 1.day
   end
 end
