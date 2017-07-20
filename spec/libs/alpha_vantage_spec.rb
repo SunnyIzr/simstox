@@ -11,7 +11,7 @@ describe AlphaVantage do
     
     res = AlphaVantage.timeseries('intraday','msft')
 
-    expect(res).to be_an_instance_of(Hash)
+    expect(res).to be_an_instance_of(Array)
   end
 
   it 'queries AlphaVantageAPI for latest stock price on a ticker' do
@@ -21,6 +21,6 @@ describe AlphaVantage do
     
     res = AlphaVantage.latest('msft')
 
-    expect(res).to be_an_instance_of(Float) 
+    expect(res).to eq(7392)
   end
 end

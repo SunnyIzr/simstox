@@ -19,7 +19,7 @@ class Position
   end
 
   def current_price
-    AlphaVantage.latest(stock.ticker)
+    ( AlphaVantage.latest(stock.ticker) / 100.00 ).round(2)
   end
 
   def trades

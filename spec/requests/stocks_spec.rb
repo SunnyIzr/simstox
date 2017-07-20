@@ -15,8 +15,9 @@ describe 'Stocks API', type: :request do
 
     context "when stock exists" do
       it 'returns stock price data on a ticker' do
-        expect(JSON.parse(response.body)).to be_an_instance_of(Hash)
-    
+
+        expect(JSON.parse(response.body)).to be_an_instance_of(Array)
+        expect(JSON.parse(response.body)[0][1]).to eq(7392)
       end
 
       it 'returns status code 200' do
