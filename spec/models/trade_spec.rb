@@ -7,10 +7,11 @@ describe Trade do
   let!(:trade) { FactoryGirl.create(:trade, ticker: 'msft', quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id) }
 
   it { should validate_presence_of(:quantity) }
-  it { should validate_presence_of(:ticker) }
+  it { should validate_presence_of(:stock_id) }
   it { should validate_presence_of(:price_cents) }
   it { should validate_presence_of(:portfolio_id) }
   it { should belong_to(:portfolio) }
+  it { should belong_to(:stock) }
 
   it 'returns cost' do
     cost = ( ( 10 * 30_00 ) / 100.00 ).round(2)
