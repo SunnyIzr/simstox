@@ -1,8 +1,8 @@
 class Position
-  attr_reader :portfolio_id, :ticker
+  attr_reader :portfolio_id, :stock_id
 
   def initialize(args)
-    @ticker = args.fetch(:ticker)
+    @stock_id = args.fetch(:stock_id)
     @portfolio_id = args.fetch(:portfolio_id)
   end
 
@@ -10,12 +10,20 @@ class Position
     Portfolio.find_by(id: portfolio_id)
   end
 
+  def stock
+    Stock.find_by(id: stock_id)
+  end
+
+  def ticker
+    stock.ticker
+  end
+
   def current_price
-    AlphaVantage.latest(ticker)
+    AlphaVantage.latest(stock.ticker)
   end
 
   def trades
-    portfolio.trades.where(ticker: ticker)
+    portfolio.trades.where(stock_id: stock.id)
   end
 
   def quantity

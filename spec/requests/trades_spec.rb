@@ -4,6 +4,7 @@ RSpec.describe "Trades API", type: :request do
 
   let!(:user) {FactoryGirl.create(:user)}
   let!(:portfolios) { create_list(:portfolio, 3)}
+  let!(:stocks) { create_list(:stock, 2)}
   let!(:trades) { create_list(:trade, 2)}
   let(:trade_id) { Trade.all.first.id }
 
@@ -42,7 +43,7 @@ RSpec.describe "Trades API", type: :request do
 
     let(:valid_attributes) { {
       quantity: 10,
-      ticker: "NKE", 
+      stock_id: Stock.last.id, 
       price_cents: 40_00,
       portfolio_id: Portfolio.last.id
       }}
@@ -51,7 +52,7 @@ RSpec.describe "Trades API", type: :request do
       before { post '/trades', params: valid_attributes }
 
       it "creates a trade" do
-         expect(JSON.parse(response.body)['ticker']).to eq('NKE')
+         expect(JSON.parse(response.body)['price_cents']).to eq(4000)
       end
 
       it "returns status code 201" do
@@ -61,7 +62,7 @@ RSpec.describe "Trades API", type: :request do
     end
 
     context "when request is not valid" do
-      before { post '/trades', params: { quantity: 10, ticker: "NKE", price_cents: 40_00 } }
+      before { post '/trades', params: { quantity: 10, stock_id: Stock.last.id, price_cents: 40_00 } }
 
       it "returns a failure message" do
         expect(response.body).to match(/Validation failed: Portfolio must exist/)

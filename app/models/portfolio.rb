@@ -1,15 +1,16 @@
 class Portfolio < ApplicationRecord
   has_many :trades
+  has_many :stocks, through: :trades
   belongs_to :user
   validates :name, :cash_cents, :user_id, :starting_balance_cents, presence: true
 
   def tickers
-    trades.pluck(:ticker).uniq
+    stocks.pluck(:ticker).uniq
   end
 
   def positions
-    tickers.map do |ticker|
-      Position.new({ticker: ticker, portfolio_id: id})
+    stocks.uniq.map do |stock|
+      Position.new({stock_id: stock.id, portfolio_id: id})
     end
   end
 

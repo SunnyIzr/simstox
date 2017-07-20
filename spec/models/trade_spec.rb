@@ -4,7 +4,8 @@ describe Trade do
   let!(:user) {FactoryGirl.create(:user)}
   let!(:portfolios) { create_list(:portfolio, 1)}
   let!(:portfolio_id) {Portfolio.last.id}
-  let!(:trade) { FactoryGirl.create(:trade, ticker: 'msft', quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id) }
+  let!(:stock) {FactoryGirl.create(:stock, ticker: 'msft')}
+  let!(:trade) { FactoryGirl.create(:trade, stock_id: Stock.last.id, quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id) }
 
   it { should validate_presence_of(:quantity) }
   it { should validate_presence_of(:stock_id) }

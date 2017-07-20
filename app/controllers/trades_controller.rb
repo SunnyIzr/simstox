@@ -12,6 +12,6 @@ class TradesController < ApplicationController
   private
 
   def trade_params
-    params.permit(:quantity, :ticker, :price_cents, :portfolio_id)
+    params.permit(:quantity, :ticker, :price_cents, :portfolio_id, :stock_id)
   end
 end
