@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe Quote, type: :model do
   it { should validate_presence_of(:price_cents) }
