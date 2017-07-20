@@ -34,14 +34,14 @@ describe Position do
   end
 
   it 'returns the average price' do
-    num = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
+    average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
 
-    expect(position.average_price).to eq(num)
+    expect(position.average_price).to eq(average_price)
   end
 
   it 'returns cost basis' do
-    num = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
-    cost_basis = num * 28
+    average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
+    cost_basis = average_price * 28
 
     expect(position.cost_basis).to eq(cost_basis)
   end
@@ -61,8 +61,8 @@ describe Position do
       with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: response_data , headers: {})
 
-    num = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
-    cost_basis = num * 28
+    average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
+    cost_basis = average_price * 28
     mkt_value = 28 * 73.92
     unrealized_pl = ( mkt_value - cost_basis ).round(2)
 
@@ -74,8 +74,8 @@ describe Position do
       with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: response_data , headers: {})
 
-    num = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
-    cost_basis = num * 28
+    average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
+    cost_basis = average_price * 28
     mkt_value = 28 * 73.92
     unrealized_pl = mkt_value - cost_basis
     return_value = ( unrealized_pl / cost_basis ).round(4)

@@ -31,7 +31,7 @@ class Position
         total_cost += trade.cost
       end
     end
-    ( ( total_cost.to_f / buy_qty ) / 100.00 ).round(2)
+    ( total_cost / buy_qty ).round(2)
   end
 
   def cost_basis
