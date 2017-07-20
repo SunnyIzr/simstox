@@ -29,8 +29,12 @@ class Portfolio < ApplicationRecord
     (market_value - cost_basis).round(2)
   end
 
+  def total_pl
+    ( total_value - ( starting_balance_cents / 100.00 ) ).round(2)
+  end
+
   def return
-    ( total_value / starting_balance_cents ) - 1
+    ( total_pl / ( starting_balance_cents / 100 ) ).round(4)
   end
 
 end
