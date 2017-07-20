@@ -1,5 +1,8 @@
 stocks = %w[T CSCO KO CMCSA INTC NKE ORCL PFE TD VZ WFC]
 
+stocks.each do |stock|
+  Stock.create(ticker: stock)
+end
 
 3.times do
   first_name = Faker::Name.first_name
@@ -15,7 +18,7 @@ stocks = %w[T CSCO KO CMCSA INTC NKE ORCL PFE TD VZ WFC]
     10.times do
       portfolio.trades.create({
         quantity: [*10..5_000].sample,
-        ticker: stocks.sample,
+        stock: Stock.all.sample,
         price_cents: [*30_00..60_00].sample
       })
     end
