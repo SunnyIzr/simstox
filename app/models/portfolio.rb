@@ -1,6 +1,7 @@
 class Portfolio < ApplicationRecord
   has_many :trades
   has_many :stocks, through: :trades
+  has_many :portfolio_values
   belongs_to :user
   validates :name, :cash_cents, :user_id, :starting_balance_cents, presence: true
 

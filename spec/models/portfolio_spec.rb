@@ -25,6 +25,7 @@ describe Portfolio do
   it { should validate_presence_of(:starting_balance_cents) }
   it { should have_many(:trades) }
   it { should have_many(:stocks) }
+  it { should have_many(:portfolio_values) }
   it { should belong_to(:user) }
 
   
