@@ -9,6 +9,11 @@ describe Portfolio do
     FactoryGirl.create(:stock, ticker: 't'), 
     FactoryGirl.create(:stock, ticker: 'ko')
   ]}
+  let!(:quotes) { [ 
+    FactoryGirl.create(:quote, stock_id: Stock.all[0].id, price_cents: 5433), 
+    FactoryGirl.create(:quote, stock_id: Stock.all[1].id, price_cents: 2791), 
+    FactoryGirl.create(:quote, stock_id: Stock.all[2].id, price_cents: 8733)
+  ]}
   let!(:trades) { [ 
     FactoryGirl.create(:trade, stock_id: stocks[0].id, quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id), 
     FactoryGirl.create(:trade, stock_id: stocks[0].id, quantity: 20, price_cents: 50_00, portfolio_id: portfolio_id), 
@@ -50,32 +55,33 @@ describe Portfolio do
     expect(portfolio.cost_basis).to eq(total_cost)
   end
 
-  it 'returns market value' do
+  it 'returns real time market value' do
     stub_request(:get, /www.alphavantage.co/).
       with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: response_data , headers: {})
 
     mkt_value = 58 * 73.92
 
+    expect(portfolio.market_value_realtime).to eq(mkt_value)
+  end
+
+  it 'returns market value' do
+    mkt_value = ( 13 * 54.33 ) + ( 15 * 27.91 ) + ( 30 * 87.33 )
+
     expect(portfolio.market_value).to eq(mkt_value)
   end
 
   it 'returns total value' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
+    mkt_value = ( 13 * 54.33 ) + ( 15 * 27.91 ) + ( 30 * 87.33 )
 
-    total_value = ( 58 * 73.92 ) + 50_000
+    total_value = mkt_value + 50_000
 
     expect(portfolio.total_value).to eq(total_value)
   end
 
   it 'returns unrealized P&L' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
+    mkt_value = ( 13 * 54.33 ) + ( 15 * 27.91 ) + ( 30 * 87.33 )
 
-    mkt_value = ( 58 * 73.92 )
     msft_cost = ( ((30.00*10) + (50.00*20)) / 30 ).round(2) * 13
     ko_cost = 25.00 * 30
     t_cost = 40.00 * 15
@@ -87,11 +93,9 @@ describe Portfolio do
   end
 
   it 'returns a total P&L on a portfolio' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
+    mkt_value = ( 13 * 54.33 ) + ( 15 * 27.91 ) + ( 30 * 87.33 )
 
-    total_value = ( 58 * 73.92 ) + 50_000
+    total_value = mkt_value + 50_000
 
     total_pl = total_value - 100_000
 
@@ -99,11 +103,9 @@ describe Portfolio do
   end
 
   it 'returns a return value calculated on open position' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
+    mkt_value = ( 13 * 54.33 ) + ( 15 * 27.91 ) + ( 30 * 87.33 )
 
-    total_value = ( 58 * 73.92 ) + 50_000
+    total_value = mkt_value + 50_000
 
     total_pl = total_value - 100_000
 

@@ -6,6 +6,7 @@ describe Position do
   let!(:portfolios) { create_list(:portfolio, 3)}
   let!(:portfolio_id) {Portfolio.last.id}
   let!(:stock) { FactoryGirl.create(:stock, ticker: 'msft') }
+  let!(:quote) { FactoryGirl.create(:quote, price_cents: 7543)}
   let!(:trades) { [ 
     FactoryGirl.create(:trade, stock_id: stock.id, quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id),
     FactoryGirl.create(:trade, stock_id: stock.id, quantity: 15, price_cents: 40_00, portfolio_id: portfolio_id),
@@ -52,37 +53,35 @@ describe Position do
     expect(position.cost_basis).to eq(cost_basis)
   end
 
-  it 'returns market value' do
+  it 'returns real time market value' do
     stub_request(:get, /www.alphavantage.co/).
       with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: response_data , headers: {})
 
     mkt_value = 28 * 73.92
+
+    expect(position.market_value_realtime).to eq(mkt_value)
+  end
+
+  it 'returns market value' do
+    mkt_value = 28 * 75.43
 
     expect(position.market_value).to eq(mkt_value)
   end
 
   it 'returns unrealized P&L' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
-
     average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
     cost_basis = average_price * 28
-    mkt_value = 28 * 73.92
+    mkt_value = 28 * 75.43
     unrealized_pl = ( mkt_value - cost_basis ).round(2)
 
     expect(position.unrealized_pl).to eq(unrealized_pl)
   end
 
   it 'returns a return value calculated on open position' do
-    stub_request(:get, /www.alphavantage.co/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(status: 200, body: response_data , headers: {})
-
     average_price = ( ( ( (10 * 30_00) + (15 * 40_00) + (20 * 50_00) ) / 45 ) / 100.00 ).round(2)
     cost_basis = average_price * 28
-    mkt_value = 28 * 73.92
+    mkt_value = 28 * 75.43
     unrealized_pl = mkt_value - cost_basis
     return_value = ( unrealized_pl / cost_basis ).round(4)
 
