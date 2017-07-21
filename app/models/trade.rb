@@ -7,4 +7,12 @@ class Trade < ApplicationRecord
   def cost
     ( ( quantity * price_cents ) / 100.00 ).round(2)
   end
+
+  def ticker
+    stock.ticker
+  end
+
+  def price
+    ( price_cents / 100.00 ).round(2)
+  end
 end
