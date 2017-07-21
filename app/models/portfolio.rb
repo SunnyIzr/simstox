@@ -5,6 +5,14 @@ class Portfolio < ApplicationRecord
   belongs_to :user
   validates :name, :cash_cents, :user_id, :starting_balance_cents, presence: true
 
+  def cash
+    ( cash_cents / 100.00 ).round(2)
+  end
+
+  def starting_balance
+    ( starting_balance_cents / 100.00 ).round(2)
+  end
+
   def tickers
     stocks.pluck(:ticker).uniq
   end
@@ -23,8 +31,12 @@ class Portfolio < ApplicationRecord
     (positions.map{ |position| position.market_value }.sum).round(2)
   end
 
+  def market_value_real_time
+    (positions.map{ |position| position.market_value_real_time }.sum).round(2)
+  end
+
   def total_value
-    market_value + ( cash_cents / 100 ).round(2)
+    ( market_value + cash ).round(2)
   end
 
   def unrealized_pl
@@ -32,11 +44,11 @@ class Portfolio < ApplicationRecord
   end
 
   def total_pl
-    ( total_value - ( starting_balance_cents / 100.00 ) ).round(2)
+    ( total_value - starting_balance ).round(2)
   end
 
   def return
-    ( total_pl / ( starting_balance_cents / 100 ) ).round(4)
+    ( total_pl / starting_balance_cents ).round(4)
   end
 
 end
