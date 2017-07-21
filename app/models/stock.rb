@@ -7,6 +7,10 @@ class Stock < ApplicationRecord
     AlphaVantage.timeseries('daily', ticker)
   end
 
+  def get_historical_quotes_realtime
+    AlphaVantage.timeseries('intraday', ticker)
+  end
+
   def save_historical_quotes
     quotes = get_historical_quotes
     quotes.each do |quote|
