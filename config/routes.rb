@@ -4,6 +4,6 @@ Rails.application.routes.draw do
 
   get '/stocks/:ticker/historical' => 'stocks#historical'
 
-  get '/portfolios/:portfolio_id/stocks/:stock_id' => 'positions#index'
+  get '/portfolios/:portfolio_id/stocks/:stock_id' => 'positions#show'
   
 end
