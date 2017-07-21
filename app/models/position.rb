@@ -7,7 +7,7 @@ class Position
   end
 
   def portfolio
-    Portfolio.find_by(id: portfolio_id)
+    Portfolio.find_by(id: portfolio_id.to_i)
   end
 
   def stock
@@ -20,6 +20,10 @@ class Position
 
   def current_price
     ( AlphaVantage.latest(stock.ticker) / 100.00 ).round(2)
+  end
+
+  def close_price
+    Quote.where(stock_id: stock_id).last.price
   end
 
   def trades
@@ -47,6 +51,10 @@ class Position
   end
 
   def market_value
+    (quantity * close_price).round(2)
+  end
+
+  def market_value_real_time
     (quantity * current_price).round(2)
   end
 
