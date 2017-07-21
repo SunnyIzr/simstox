@@ -31,8 +31,8 @@ class Portfolio < ApplicationRecord
     (positions.map{ |position| position.market_value }.sum).round(2)
   end
 
-  def market_value_real_time
-    (positions.map{ |position| position.market_value_real_time }.sum).round(2)
+  def market_value_realtime
+    (positions.map{ |position| position.market_value_realtime }.sum).round(2)
   end
 
   def total_value
@@ -48,7 +48,7 @@ class Portfolio < ApplicationRecord
   end
 
   def return
-    ( total_pl / starting_balance_cents ).round(4)
+    ( total_pl / starting_balance ).round(4)
   end
 
 end

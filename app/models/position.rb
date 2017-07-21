@@ -54,7 +54,7 @@ class Position
     (quantity * close_price).round(2)
   end
 
-  def market_value_real_time
+  def market_value_realtime
     (quantity * current_price).round(2)
   end
 

@@ -11,6 +11,6 @@ class PortfolioValue < ApplicationRecord
   end
 
   def total_value
-    market_value + cash_cents
+    market_value + cash
   end
 end

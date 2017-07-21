@@ -19,4 +19,12 @@ describe Trade do
 
     expect(trade.cost).to eq(cost)
   end
+
+  it 'returns ticker' do
+    expect(trade.ticker).to eq('msft')
+  end
+
+  it 'returns price in dollars' do
+    expect(trade.price).to eq(30.00)
+  end
 end
