@@ -4,11 +4,11 @@ class Stock < ApplicationRecord
   has_many :quotes
 
   def get_historical_quotes
-    AlphaVantage.timeseries('daily', ticker)
+    AlphaVantage.timeseries('weekly', ticker).take(25)
   end
 
   def get_historical_quotes_realtime
-    AlphaVantage.timeseries('intraday', ticker)
+    AlphaVantage.timeseries('intraday', ticker).take(25)
   end
 
   def save_historical_quotes
