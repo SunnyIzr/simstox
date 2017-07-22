@@ -111,7 +111,7 @@ describe Portfolio do
 
     return_value = (total_pl / 100_000).round(4)
 
-    expect(portfolio.return).to eq(return_value)
+    expect(portfolio.return_value).to eq(return_value)
   end
 
 end

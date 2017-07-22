@@ -47,7 +47,7 @@ class Portfolio < ApplicationRecord
     ( total_value - starting_balance ).round(2)
   end
 
-  def return
+  def return_value
     ( total_pl / starting_balance ).round(4)
   end
 

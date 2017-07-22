@@ -5,8 +5,8 @@ class PositionSerializer < ActiveModel::Serializer
     object.ticker
   end
 
-  def return
-    object.return
+  def return_value
+    object.return_value
   end
 
   def quantity

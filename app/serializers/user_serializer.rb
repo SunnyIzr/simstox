@@ -7,7 +7,7 @@ class UserSerializer < ActiveModel::Serializer
       cash: portfolio.cash,
       market_value: portfolio.market_value,
       total_value: portfolio.total_value,
-      return_value: portfolio.return
+      return_value: portfolio.return_value
     }}
   end
 end

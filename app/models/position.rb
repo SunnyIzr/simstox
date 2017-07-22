@@ -62,7 +62,7 @@ class Position
     (market_value - cost_basis).round(2)
   end
 
-  def return
+  def return_value
     ( unrealized_pl / cost_basis ).round(4)
   end
 

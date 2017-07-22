@@ -85,7 +85,7 @@ describe Position do
     unrealized_pl = mkt_value - cost_basis
     return_value = ( unrealized_pl / cost_basis ).round(4)
 
-    expect(position.return).to eq(return_value)
+    expect(position.return_value).to eq(return_value)
   end
 
 end
