@@ -1,5 +1,9 @@
 class PositionSerializer < ActiveModel::Serializer
-  attributes :ticker, :return, :quantity, :average_price, :close_price, :intraday
+  attributes :porfolio_name, :ticker, :return, :quantity, :average_price, :close_price, :unrealized_pl, :intraday
+
+  def portfolio_name
+    object.portfolio_name
+  end
 
   def ticker
     object.ticker
@@ -19,6 +23,10 @@ class PositionSerializer < ActiveModel::Serializer
 
   def close_price
     object.close_price
+  end
+
+  def unrealized_pl
+    object.unrealized_pl
   end
 
   def intraday
