@@ -11,6 +11,8 @@ class PortfolioSerializer < ActiveModel::Serializer
   end
   def positions
     object.positions.collect{|position| { 
+      stock_id: position.stock_id,
+      portfolio_id: position.portfolio_id,
       ticker: position.ticker,
       quantity: position.quantity,
       average_price: position.average_price,
