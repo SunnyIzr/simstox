@@ -1,5 +1,5 @@
 class PositionSerializer < ActiveModel::Serializer
-  attributes :porfolio_name, :ticker, :return, :quantity, :average_price, :close_price, :unrealized_pl, :intraday
+  attributes :porfolio_name, :ticker, :return_value, :quantity, :average_price, :close_price, :unrealized_pl, :intraday
 
   def portfolio_name
     object.portfolio_name
@@ -10,7 +10,7 @@ class PositionSerializer < ActiveModel::Serializer
   end
 
   def return_value
-    object.return_value
+    ( object.return_value * 100 ).round(2)
   end
 
   def quantity
@@ -30,6 +30,6 @@ class PositionSerializer < ActiveModel::Serializer
   end
 
   def intraday
-    object.stock.get_historical_quotes_realtime
+    object.stock.get_historical_quotes_realtime.map { |quote| (quote[1] / 100.00).round(2) }
   end
 end

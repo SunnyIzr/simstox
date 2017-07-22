@@ -25,4 +25,7 @@ class PortfolioSerializer < ActiveModel::Serializer
       time: quote.time
     }}
   end
+  def return_value
+    ( object.return_value * 100 ).round(2)
+  end
 end
