@@ -10,7 +10,7 @@ describe Trade do
   end
 
   let!(:user) {FactoryGirl.create(:user)}
-  let!(:portfolios) { create_list(:portfolio, 1)}
+  let!(:portfolios) { create_list(:portfolio, 1, cash_cents: 1_000_00)}
   let!(:portfolio_id) {Portfolio.last.id}
   let!(:stock) {FactoryGirl.create(:stock, ticker: 'msft')}
   let!(:trade) { FactoryGirl.create(:trade, stock_id: Stock.last.id, quantity: 10, price_cents: 30_00, portfolio_id: portfolio_id) }
@@ -35,4 +35,25 @@ describe Trade do
   it 'returns price in dollars' do
     expect(trade.price).to eq(30.00)
   end
+
+    context 'when new trade is executed' do
+    
+    it 'should not be able to place a sell order if there is not enough inventory' do
+      new_trade = FactoryGirl.build(:trade, stock_id: Stock.last.id, quantity: -15, price_cents: 30_00, portfolio_id: portfolio_id)
+      expect(new_trade).to_not be_valid
+      expect(new_trade.errors.full_messages[0]).to eq('Portfolio does not have sufficient inventory to cover this trade')
+    end
+
+    it 'should not be able to place a buy order if there is not enough cash' do
+      new_trade = FactoryGirl.build(:trade, stock_id: Stock.last.id, quantity: 5000, price_cents: 30_00, portfolio_id: portfolio_id)
+      expect(new_trade).to_not be_valid
+      expect(new_trade.errors.full_messages[0]).to eq('Portfolio does not have sufficient funds to cover this trade')
+    end
+
+    it 'should reduce cash from portfolio'
+
+    it 'should create new stock if it does not exist'
+
+  end
+
 end
