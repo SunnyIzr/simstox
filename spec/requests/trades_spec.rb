@@ -73,7 +73,7 @@ RSpec.describe "Trades API", type: :request do
 
     let(:valid_attributes) { {
       quantity: 10,
-      stock_id: Stock.last.id, 
+      ticker: Stock.last.ticker, 
       price_cents: 40_00,
       portfolio_id: Portfolio.last.id
       }}
