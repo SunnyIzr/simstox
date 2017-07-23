@@ -14,6 +14,17 @@ class UsersController < ApplicationController
     json_response(@user, :created)
   end
 
+  def login 
+    @user = User.find_by(username: params[:username].to_s.downcase)
+
+    if @user && @user.authenticate(params[:password])
+      json_response(@user)
+    else
+      json_response( {message: 'Invalid credentials' }, :unauthorized)
+    end
+
+  end
+
   private
 
   def user_params

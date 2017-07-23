@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe "Users API", type: :request do
 
-  let!(:user) {FactoryGirl.create(:user, first_name: "John", last_name: "Doe")}
+  let!(:user) {FactoryGirl.create(:user, first_name: "John", last_name: "Doe", username: 'johndoe')}
   let!(:portfolios) { create_list(:portfolio, 3)}
   let!(:stocks) { create_list(:stock, 2)}
   let!(:quotes) { [ 
@@ -63,7 +63,7 @@ RSpec.describe "Users API", type: :request do
   describe "POST /users" do
 
     let(:valid_attributes) { {
-      username: "johndoe",
+      username: "johndoe123",
       first_name: "John",
       last_name: "Doe",
       password: 'password'
@@ -73,7 +73,7 @@ RSpec.describe "Users API", type: :request do
       before { post '/users', params: valid_attributes }
 
       it "creates a user" do
-        expect(JSON.parse(response.body)['username']).to eq('johndoe')
+        expect(JSON.parse(response.body)['username']).to eq('johndoe123')
       end
 
       it "returns status code 201" do
@@ -91,6 +91,53 @@ RSpec.describe "Users API", type: :request do
 
       it "returns status code 422" do
         expect(response).to have_http_status(422)
+      end
+      
+    end
+  end
+
+  describe "POST /users/login" do
+
+    let(:valid_attributes) { {
+      username: "johndoe",
+      password: 'password'
+      }}
+
+    context "when login credentials are valid" do
+      before { post '/users/login', params: valid_attributes }
+
+      it "returns a user" do
+        expect(JSON.parse(response.body)['username']).to eq('johndoe')
+      end
+
+      it "returns status code 201" do
+        expect(response).to have_http_status(200)
+      end
+
+    end
+
+    context "when username is not found" do
+      before { post '/users/login', params: { username: 'johndoe123', password: 'password' } }
+
+      it "returns a failure message" do
+        expect(response.body).to match(/Invalid credentials/)
+      end
+
+      it "returns status code 401" do
+        expect(response).to have_http_status(401)
+      end
+      
+    end
+
+    context "when password is not correct" do
+      before { post '/users/login', params: { username: 'johndoe', password: 'password123' } }
+
+      it "returns a failure message" do
+        expect(response.body).to match(/Invalid credentials/)
+      end
+
+      it "returns status code 401" do
+        expect(response).to have_http_status(401)
       end
       
     end
