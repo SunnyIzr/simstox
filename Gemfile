@@ -24,6 +24,8 @@ gem 'active_model_serializers'
 
 gem 'pry'
 
+gem 'jwt'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
