@@ -2,8 +2,9 @@ class Trade < ApplicationRecord
   belongs_to :portfolio
   belongs_to :stock
   delegate :user, :to => :portfolio, :allow_nil => true
-  validates :quantity, :stock_id, :price_cents, :portfolio_id, presence: true
+  before_save :reduce_cash
   validates_with TradeValidator
+  validates :quantity, :stock_id, :price_cents, :portfolio_id, presence: true
 
   def cost
     ( ( quantity * price_cents ) / 100.00 ).round(2)
@@ -22,7 +23,8 @@ class Trade < ApplicationRecord
   end
 
   def reduce_cash
-    ( quantity * price_cents )
+    new_cash_cents = portfolio.cash_cents - ( quantity * price_cents )
+    portfolio.update!(cash_cents: new_cash_cents)
   end
 
 end

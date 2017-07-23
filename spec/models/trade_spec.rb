@@ -50,9 +50,13 @@ describe Trade do
       expect(new_trade.errors.full_messages[0]).to eq('Portfolio does not have sufficient funds to cover this trade')
     end
 
-    it 'should reduce cash from portfolio'
+    it 'reduces cash from portfolio' do
+      expect(trade.portfolio.cash_cents).to eq(700_00)
+    end
 
-    it 'should create new stock if it does not exist'
+    it 'executes new trade given a ticker'
+
+    it 'creates new stock if it does not exist'
 
   end
 
