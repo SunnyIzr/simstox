@@ -2,8 +2,12 @@ class ApplicationController < ActionController::API
   include Response
   include ExceptionHandler
   
-  def authenticate_request!
-    json_response( {error: 'Permission denied'}, :unauthorized) unless logged_in?
+  def authenticate!(object)
+    invalid_request unless logged_in? && authorized?(object)
+  end
+
+  def invalid_request
+    json_response( {error: 'Permission denied'}, :unauthorized)
   end
 
   def current_user
@@ -14,6 +18,10 @@ class ApplicationController < ActionController::API
 
   def logged_in?
     !!current_user
+  end
+
+  def authorized?(user)
+    current_user == user
   end
 
   private

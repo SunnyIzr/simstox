@@ -10,6 +10,10 @@ class Position
     Portfolio.find_by(id: portfolio_id.to_i)
   end
 
+  def user
+    portfolio.user
+  end
+
   def stock
     Stock.find_by(id: stock_id)
   end
