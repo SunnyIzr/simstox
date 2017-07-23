@@ -27,4 +27,11 @@ class Trade < ApplicationRecord
     portfolio.update!(cash_cents: new_cash_cents)
   end
 
+  def ticker=(ticker)
+    if stock_id.nil?
+      stock = Stock.find_or_create_by(ticker: ticker)
+      self.stock_id = stock.id
+    end
+  end
+
 end

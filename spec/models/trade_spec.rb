@@ -54,9 +54,18 @@ describe Trade do
       expect(trade.portfolio.cash_cents).to eq(700_00)
     end
 
-    it 'executes new trade given a ticker'
+    it 'executes new trade given a ticker' do
+      trade = Trade.new(quantity: 10, price_cents: 4500, portfolio_id: Portfolio.last.id,ticker: "msft")
 
-    it 'creates new stock if it does not exist'
+      expect(trade).to be_valid
+    end
+
+    it 'creates new stock if it does not exist' do
+      trade = Trade.new(quantity: 10, price_cents: 4500, portfolio_id: Portfolio.last.id,ticker: "AAPL")
+
+      expect(trade).to be_valid
+      expect(Stock.last.ticker).to eq('AAPL')
+    end
 
   end
 
