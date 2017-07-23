@@ -17,7 +17,7 @@ RSpec.describe "Users API", type: :request do
     before do
       token = JsonWebToken.encode({user_id: user.id})
 
-      get "/users/#{user_id}", headers: {Authorization: token}
+      get "/user", headers: {Authorization: token}
     end
 
     context "when user exists" do
@@ -34,24 +34,12 @@ RSpec.describe "Users API", type: :request do
 
     end
 
-    context 'when user does not exist' do
-      let(:user_id) { User.last.id + 100 }
-
-      it "returns not found message" do
-        expect(response.body).to match(/Couldn't find User/)
-      end
-
-      it "returns status code 404" do
-        expect(response).to have_http_status(404)
-      end
-    end
-
     context 'when request is unauthorized' do
       before do
         id = user.id + 100
         token = JsonWebToken.encode({user_id: id})
       
-         get "/users/#{user_id}", headers: {Authorization: token}
+         get "/user", headers: {Authorization: token}
       end
 
       it 'returns permission denied message' do
@@ -133,7 +121,7 @@ RSpec.describe "Users API", type: :request do
       end
 
       it 'returns an auth token' do
-        expect(JsonWebToken.decode(JSON.parse(response.body)['auth_token'])['user_id']).to eq(user.id)
+        expect(JsonWebToken.decode(JSON.parse(response.body)['token'])['user_id']).to eq(user.id)
       end
 
       it "returns status code 201" do

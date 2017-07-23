@@ -5,10 +5,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    return if authenticate!(@user)
+    return if authenticate!(current_user)
 
-    json_response(@user)
+    json_response(current_user)
   end
 
   def create
@@ -21,7 +20,7 @@ class UsersController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       auth_token = JsonWebToken.encode({user_id: @user.id})
-      json_response({ auth_token: auth_token, user: @user })
+      json_response({ token: auth_token, user: JSON.parse(UserSerializer.new(@user).to_json) })
     else
       json_response( {message: 'Invalid credentials' }, :unauthorized)
     end
