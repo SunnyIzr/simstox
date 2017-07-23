@@ -2,6 +2,7 @@ class Stock < ApplicationRecord
   validates :ticker, presence: true, uniqueness: true
   has_many :trades
   has_many :quotes
+  after_create :save_historical_quotes
 
   def get_historical_quotes
     AlphaVantage.timeseries('weekly', ticker).take(25)
