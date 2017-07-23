@@ -107,7 +107,11 @@ RSpec.describe "Users API", type: :request do
       before { post '/users/login', params: valid_attributes }
 
       it "returns a user" do
-        expect(JSON.parse(response.body)['username']).to eq('johndoe')
+        expect(JSON.parse(response.body)['user']['username']).to eq('johndoe')
+      end
+
+      it 'returns an auth token' do
+        expect(JsonWebToken.decode(JSON.parse(response.body)['auth_token'])['user_id']).to eq(user.id)
       end
 
       it "returns status code 201" do

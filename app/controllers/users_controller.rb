@@ -18,7 +18,8 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username].to_s.downcase)
 
     if @user && @user.authenticate(params[:password])
-      json_response(@user)
+      auth_token = JsonWebToken.encode({user_id: @user.id})
+      json_response({ auth_token: auth_token, user: @user })
     else
       json_response( {message: 'Invalid credentials' }, :unauthorized)
     end
