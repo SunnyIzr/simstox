@@ -6,6 +6,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    return if authenticate!(@user)
+
     json_response(@user)
   end
 

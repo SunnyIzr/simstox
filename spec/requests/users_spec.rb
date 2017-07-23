@@ -14,7 +14,11 @@ RSpec.describe "Users API", type: :request do
 
   describe "GET /users/:id" do
 
-    before { get "/users/#{user_id}" }
+    before do
+      token = JsonWebToken.encode({user_id: user.id})
+
+      get "/users/#{user_id}", headers: {Authorization: token}
+    end
 
     context "when user exists" do
 
@@ -40,6 +44,24 @@ RSpec.describe "Users API", type: :request do
       it "returns status code 404" do
         expect(response).to have_http_status(404)
       end
+    end
+
+    context 'when request is unauthorized' do
+      before do
+        id = user.id + 100
+        token = JsonWebToken.encode({user_id: id})
+      
+         get "/users/#{user_id}", headers: {Authorization: token}
+      end
+
+      it 'returns permission denied message' do
+        expect(response.body).to match(/Permission denied/)
+      end
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(401)
+      end
+
     end
 
   end
