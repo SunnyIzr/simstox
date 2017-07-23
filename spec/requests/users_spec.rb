@@ -60,4 +60,40 @@ RSpec.describe "Users API", type: :request do
 
   end
 
+  describe "POST /users" do
+
+    let(:valid_attributes) { {
+      username: "johndoe",
+      first_name: "John",
+      last_name: "Doe",
+      password: 'password'
+      }}
+
+    context "when request is valid" do
+      before { post '/users', params: valid_attributes }
+
+      it "creates a user" do
+        expect(JSON.parse(response.body)['username']).to eq('johndoe')
+      end
+
+      it "returns status code 201" do
+        expect(response).to have_http_status(201)
+      end
+
+    end
+
+    context "when request is not valid" do
+      before { post '/users', params: { username: 'johndoe', first_name: 'John', password: 'password' } }
+
+      it "returns a failure message" do
+        expect(response.body).to match(/Validation failed: Last name can't be blank/)
+      end
+
+      it "returns status code 422" do
+        expect(response).to have_http_status(422)
+      end
+      
+    end
+  end
+
 end

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :trades, only: [:show, :create]
   resources :portfolios, only: [:show, :create, :update, :destroy]
-  resources :users, only: [:show, :index]
+  resources :users, only: [:show, :index, :create]
 
   get '/stocks/:ticker/historical' => 'stocks#historical'
 
