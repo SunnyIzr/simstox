@@ -10,7 +10,11 @@ RSpec.describe "Trades API", type: :request do
 
   describe "GET /trades/:id" do
 
-    before { get "/trades/#{trade_id}" }
+    before do
+      token = JsonWebToken.encode({user_id: user.id})
+
+      get "/trades/#{trade_id}", headers: {Authorization: token}
+    end
 
     context "when trade exists" do
 
@@ -37,6 +41,24 @@ RSpec.describe "Trades API", type: :request do
       end
     end
 
+    context 'when request is unauthorized' do
+      before do
+        id = user.id + 100
+        token = JsonWebToken.encode({user_id: id})
+      
+         get "/trades/#{trade_id}", headers: {Authorization: token}
+      end
+
+      it 'returns permission denied message' do
+        expect(response.body).to match(/Permission denied/)
+      end
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(401)
+      end
+
+    end
+
   end
 
   describe "POST /trades" do
@@ -49,7 +71,11 @@ RSpec.describe "Trades API", type: :request do
       }}
 
     context "when request is valid" do
-      before { post '/trades', params: valid_attributes }
+      before do
+        token = JsonWebToken.encode({user_id: user.id})
+
+        post '/trades', params: valid_attributes, headers: {Authorization: token}
+      end
 
       it "creates a trade" do
          expect(JSON.parse(response.body)['price_cents']).to eq(4000)
@@ -62,10 +88,14 @@ RSpec.describe "Trades API", type: :request do
     end
 
     context "when request is not valid" do
-      before { post '/trades', params: { quantity: 10, stock_id: Stock.last.id, price_cents: 40_00 } }
+      before do
+        token = JsonWebToken.encode({user_id: user.id})
+
+        post '/trades', params: { quantity: 10, portfolio_id: Portfolio.last.id, price_cents: 40_00 }, headers: {Authorization: token}
+      end
 
       it "returns a failure message" do
-        expect(response.body).to match(/Validation failed: Portfolio must exist/)
+        expect(response.body).to match(/Validation failed: Stock must exist/)
       end
 
       it "returns status code 422" do
@@ -73,6 +103,25 @@ RSpec.describe "Trades API", type: :request do
       end
       
     end
+
+    context 'when request is unauthorized' do
+      before do
+        id = user.id + 100
+        token = JsonWebToken.encode({user_id: id})
+      
+         post '/trades', params: valid_attributes, headers: {Authorization: token}
+      end
+
+      it 'returns permission denied message' do
+        expect(response.body).to match(/Permission denied/)
+      end
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(401)
+      end
+
+    end
+    
   end
 
 end

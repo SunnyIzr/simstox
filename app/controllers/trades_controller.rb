@@ -1,11 +1,16 @@
 class TradesController < ApplicationController
   def show
     @trade = Trade.find(params[:id])
+    return if authenticate!(@trade.user)
+
     json_response(@trade)
   end
 
   def create
-    @trade = Trade.create!(trade_params)
+    @trade = Trade.new(trade_params)
+    return if authenticate!(@trade.user)
+
+    @trade.save!
     json_response(@trade, :created)
   end
 
