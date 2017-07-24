@@ -2,7 +2,7 @@ class PortfolioSerializer < ActiveModel::Serializer
   attributes :id, :name, :cash, :market_value, :total_value, :return_value, :total_pl, :recent_trades, :positions, :historical_data
 
   def recent_trades
-    object.trades.limit(5).collect{ |trade| {
+    object.trades.last(5).reverse.collect{ |trade| {
       quantity: trade.quantity,
       price: trade.price,
       ticker: trade.ticker,
