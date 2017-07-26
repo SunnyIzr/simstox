@@ -24,4 +24,13 @@ RSpec.describe PortfolioValue, type: :model do
     total_value = 75000.00 + 124830.38
     expect(portfolio_value.total_value).to eq(total_value)
   end
+
+  it 'should not save portfolio value where time/portfolio combination is the same' do
+    time = Time.new
+    FactoryGirl.create(:portfolio_value, portfolio_id: portfolio.id, time: time)
+    portfolio_value = FactoryGirl.build(:portfolio_value, portfolio_id: portfolio.id, time: time)
+
+    expect(portfolio_value).to_not be_valid
+    expect(portfolio_value.errors.full_messages[0]).to eq('Portfolio has already had Portfolio Value pulled for that time')
+  end
 end
