@@ -26,10 +26,6 @@ end
 
 end
 
-Stock.all.each do |stock|
-  stock.save_historical_quotes
-end
-
 returns = [0.97, 1.03, 1.05, 1.1, 0.9, 0.75, 0.87, 0.99, 0.94]
 Portfolio.all.each do |portfolio|
   market_value = ( portfolio.market_value * 100 ).to_i
