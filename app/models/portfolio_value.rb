@@ -1,5 +1,6 @@
 class PortfolioValue < ApplicationRecord
   validates :cash_cents, :market_value_cents, :portfolio_id, :time, presence: true
+  validates :portfolio_id, uniqueness: { scope: :time, message: "has already had Portfolio Value pulled for that time" }
   belongs_to :portfolio
 
   def market_value
