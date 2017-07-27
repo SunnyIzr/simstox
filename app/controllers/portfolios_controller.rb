@@ -9,6 +9,7 @@ class PortfoliosController < ApplicationController
 
   def create
     @portfolio = Portfolio.new(portfolio_params)
+    @portfolio.user = current_user
     return if authenticate!(@portfolio.user)
 
     @portfolio.save!
