@@ -18,4 +18,9 @@ class Stock < ApplicationRecord
       Quote.create(time: quote[0], price_cents: quote[1], stock_id: self.id)
     end
   end
+
+  def save_latest_quote
+    quote = AlphaVantage.timeseries('daily',ticker)[0]
+    Quote.create(time: quote[0], price_cents: quote[1], stock_id: self.id)
+  end
 end

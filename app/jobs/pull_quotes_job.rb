@@ -1,10 +1,7 @@
 class PullQuotesJob < ApplicationJob
-  queue_as :default
+  queue_as :simstox_worker
 
-  def perform
-    u = User.last.username + '1'
-    p '!'*50
-    User.create(first_name: 'Test', last_name: 'Job', username: u, password: 'password')
-    
+  def perform(stock)
+    stock.save_latest_quote
   end
 end
