@@ -21,3 +21,5 @@
 .env
 
 json_example.json
+
+dump.rdb
