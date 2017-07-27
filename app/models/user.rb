@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  validates :username, :first_name, :last_name, :password_digest, presence: true
+  validates :username, :first_name, :last_name, :email, :password_digest, presence: true
   validates :username, uniqueness: true
   has_many :portfolios
   has_many :trades, through: :portfolios

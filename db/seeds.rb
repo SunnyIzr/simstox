@@ -8,7 +8,8 @@ end
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
   username = Faker::Internet.user_name(first_name + ' ' + last_name)
-  user = User.create({first_name: first_name, last_name: last_name, username: username, password: 'password'})
+  email = Faker::Internet.email(first_name + ' ' + last_name)
+  user = User.create({first_name: first_name, last_name: last_name, username: username, email: email, password: 'password'})
   5.times do
     portfolio = Portfolio.create({
       name: Faker::Lorem.words(3).join(' ').capitalize,
