@@ -1,4 +1,7 @@
+require 'resque/server'
 Rails.application.routes.draw do
+  mount Resque::Server, at: '/jobs'
+  
   resources :trades, only: [:show, :create]
   resources :portfolios, only: [:show, :create, :update, :destroy]
   resources :users, only: [:index, :create] do
