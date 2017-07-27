@@ -51,4 +51,9 @@ class Portfolio < ApplicationRecord
     ( total_pl / starting_balance ).round(4)
   end
 
+  def save_value
+    market_value_cents = (market_value * 100).to_i
+    PortfolioValue.create(cash_cents: self.cash_cents, market_value_cents: market_value_cents, portfolio_id: self.id, time: Time.now.beginning_of_day)
+  end
+
 end
