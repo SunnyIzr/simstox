@@ -11,8 +11,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create!(user_params)
-    json_response(@user, :created)
+    @user = User.new(user_params)
+    if @user.save
+      auth_token = JsonWebToken.encode({user_id: @user.id})
+      json_response({ token: auth_token, user: JSON.parse(UserSerializer.new(@user).to_json) }, :created)
+    else
+      json_response( @user.errors.full_messages , :unprocessable_entity)
+    end
   end
 
   def login 
